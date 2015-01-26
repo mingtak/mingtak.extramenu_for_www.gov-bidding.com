@@ -1,0 +1,4 @@
+<registry>
+  <records interface="mingtak.extramenu.mainmenu.IMainMenu" />
+</registry>
+

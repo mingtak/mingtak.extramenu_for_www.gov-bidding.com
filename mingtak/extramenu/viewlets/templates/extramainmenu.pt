@@ -1,0 +1,54 @@
+<div class="col-xs-12 col-sm-4 col-md-3 sidemenu-holder"
+     tal:define="registry python:context.portal_registry['mingtak.extramenu.mainmenu.IMainMenu.mainmenu']">
+			<!-- ================================== TOP NAVIGATION ================================== -->
+
+<div class="side-menu animate-dropdown">
+    <div class="head"><i class="fa fa-list"></i> all categories</div>        
+    <nav class="yamm megamenu-horizontal" role="navigation">
+        <ul class="nav">
+
+<tal:getline repeat="line python:registry.split('\n')">
+           <li tal:condition="python:len(line.split('|||'))==1" class="dropdown menu-item">
+             <a tal:attributes="href python:'/productlist?catalog=%s&name=%s' %
+                                             (line.replace(' ','').lower(), line.replace(' ','_').lower())" tal:content="line" />
+           </li>
+
+<tal:getcatalog tal:condition="python:len(line.split('|||'))>1">
+
+            <li class="dropdown menu-item">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:content="python:line.split('|||')[0]" />
+                <ul class="dropdown-menu mega-menu">
+                    <li class="yamm-content">
+                        <!-- ================================== MEGAMENU VERTICAL ================================== -->
+<div class="row" tal:define="catalogList python:line.split('|||')[2].split(',')">
+    <div class="col-lg-4" tal:repeat="catalogColumn python:range(int(modules['math'].ceil(len(catalogList)/10.0)))">
+        <ul tal:define="startItem python:repeat['catalogColumn'].index * 10">
+            <li tal:repeat="item python:catalogList[startItem: startItem+10]">
+              <a tal:attributes="href python:'/productlist?catalog=%s&name=%s' % (item.replace(' ','').lower(), item.replace(' ','_').lower())";
+                 tal:content="item" />
+            </li>
+        </ul>
+    </div>
+    <div class="dropdown-banner-holder">
+        <a href="#" tal:define="image python:context.portal_catalog(id=line.split('|||')[1])[0].getObject()">
+          <img tal:replace="structure image/@@images/image" />
+        </a>
+    </div>
+
+
+
+
+</div>
+<!-- ================================== MEGAMENU VERTICAL ================================== -->                        
+                    </li>
+                </ul>
+            </li><!-- /.menu-item -->
+</tal:getcatalog>
+
+</tal:getline>
+
+        </ul><!-- /.nav -->
+    </nav><!-- /.megamenu-horizontal -->
+</div><!-- /.side-menu -->
+<!-- ================================== TOP NAVIGATION : END ================================== -->
+		</div><!-- /.sidemenu-holder -->
